@@ -23,8 +23,8 @@ class GraphAlgo(GraphAlgoInterface):
     def load_from_json(self, file_name: str) -> bool:
         dict = {}
         gr = DiGraph()
-        with open(file_name, "r+") as f:
-            dict = json.load(f);
+
+        dict = json.loads(file_name);
 
         edges={}
         nodes={}
