@@ -11,11 +11,14 @@
 # The Pokemon game - python
 In this project, we build a graph with Pokemons and the agents need to catch as many Pokemons as possible.
 
+![Untitled (online-video-cutter com)](https://user-images.githubusercontent.com/43110158/148688078-c527a64c-09cc-4ba8-a695-998b9a3b0708.gif)
 
 
 # Analysis of the performance of the algorithms:
 
-![Screenshot 2021-12-27 232312](https://user-images.githubusercontent.com/43110158/147508128-080c7d0a-e1d4-40e3-af4f-0393b710bbd4.png)
+![Screenshot 2022-01-09 170507](https://user-images.githubusercontent.com/43110158/148688071-f9e9c748-999f-4772-ade1-e70914732480.png)
+
+
 
 PC specifications: CPU: Intel(R) Core(TM) i7-10510U CPU @ 1.80GHz 2.30 GHz, Ram:16GB, Operating System: Windows 11 64bit.
 
@@ -23,13 +26,14 @@ PC specifications: CPU: Intel(R) Core(TM) i7-10510U CPU @ 1.80GHz 2.30 GHz, Ram:
 
 This is a uml of the project:
 
-![Class Diagram](ClassesDiagram.png)
+<img width="919" alt="ClassesDiagram" src="https://user-images.githubusercontent.com/43110158/148688151-84edd0ee-c199-4e48-8552-9b3f74fd8e55.png">
 
 
-
-### How To Run
+# How To Run:
 clone this project by: git clone https://github.com/orff1989/Ex4OOP.git
+
 run the server, Ex4_Server_v0.0.jar, with the command: java -jar Ex4_Server_v0.0.jar 0.
+
 run the python file, student_code, and then the gui will show up.
 
 
