@@ -1,3 +1,5 @@
+from queue import PriorityQueue
+
 from src import GraphInterface
 from src.GraphAlgoInterface import GraphAlgoInterface
 from src.DiGraph import DiGraph
@@ -19,8 +21,35 @@ class GraphAlgo(GraphAlgoInterface):
     def get_graph(self) -> GraphInterface:
         return self.graph
 
-    #this method loads new graph from json file
+     # this method loads new graph from json file
     def load_from_json(self, file_name: str) -> bool:
+        dict = {}
+        gr = DiGraph()
+        with open(file_name, "r+") as f:
+            dict = json.load(f);
+
+        edges = {}
+        nodes = {}
+
+        for t in dict["Nodes"]:
+            if len(t.keys()) != 1:
+                pos = tuple(map(float, t["pos"].split(',')))
+            else:
+                pos = (
+                random.randint(0, 50), random.randint(0, 50), 0)  # if there is no position, assging a random position
+
+            edges[t["id"]] = {}
+            nodes[t["id"]] = Node(t["id"], pos)
+        for t in dict["Edges"]:
+            edges[t["src"]][t["dest"]] = t["w"]
+
+        self.graph.Edges = edges  # init the grpah
+        self.graph.Nodes = nodes
+        self.graph.mc = 0
+        return True
+
+    #this method loads new graph from json file
+    def load_from_json2(self, file_name: str) -> bool:
         dict = {}
         gr = DiGraph()
 
@@ -75,51 +104,86 @@ class GraphAlgo(GraphAlgoInterface):
             return True
         return False
 
-    #this method returns all the shortest path from the given source and its distance
-    def dijkDist(self, src) -> (list, list):
+    def dijkDist(self, src)-> (list, list):
         visi = []
-        distance = []
-        mySet = []
-        thePath = []
+        dist = []
+        thePath=[]
 
-        for i in range(0, self.graph.v_size()):
-            visi.append(False)
-            distance.append(float('inf'))
+        for n in range(self.graph.v_size()):
+            dist.append(float('inf'))
             thePath.append([])
+        dist[src] = 0
 
-        distance[src] = 0
-        thisNode = src
+        theQ = PriorityQueue()
+        theQ.put((0, src))
 
-        while (1 == 1):
-            visi[thisNode] = True
+        while theQ.empty()==False:
 
-            for o in self.graph.Edges[thisNode]:
-                if visi[o] == True:
-                    continue
+            (ww, theNode) = theQ.get()
+            dist[theNode]=ww
 
-                mySet.append(o)
-                tempLenghth = distance[thisNode] + self.graph.Edges[thisNode][o]
-                if tempLenghth < distance[o]:
-                    distance[o] = tempLenghth
-                    thePath[o] = []
-                    thePath[o] = thePath[thisNode].copy()
-                    thePath[o].append(self.graph.Nodes[thisNode]) #adds the new node to the path
+            visi.append(theNode)
 
-            if mySet.__contains__(thisNode):
-                mySet.remove(thisNode)
+            for nn in range(self.graph.v_size()):
 
-            if len(mySet) == 0:
-                break
+                if self.graph.Edges[theNode].get(nn) != None:
 
-            minimumDistance = float('inf')
-            j = 0
-            for i in mySet:
-                if minimumDistance > distance[i]:
-                    minimumDistance = distance[i]
-                    j = i
+                        newW = dist[theNode] +  self.graph.Edges[theNode][nn]
 
-            thisNode = j
-        return distance, thePath
+                        if newW < dist[nn]:
+                            theQ.put((newW, nn))
+                            dist[nn] = newW
+                            thePath[nn] = []
+                            thePath[nn] = thePath[theNode].copy()
+                            thePath[nn].append(nn) #adds the new node to the path
+
+        return dist, thePath
+
+    # #this method returns all the shortest path from the given source and its distance
+    # def dijkDist(self, src) -> (list, list):
+    #     visi = []
+    #     distance = []
+    #     mySet = []
+    #     thePath = []
+    #
+    #     for i in range(0, self.graph.v_size()):
+    #         visi.append(False)
+    #         distance.append(float('inf'))
+    #         thePath.append([])
+    #
+    #     distance[src] = 0
+    #     thisNode = src
+    #
+    #     while (1 == 1):
+    #         visi[thisNode] = True
+    #
+    #         for o in self.graph.Edges[thisNode]:
+    #             if visi[o] == True:
+    #                 continue
+    #
+    #             mySet.append(o)
+    #             tempLenghth = distance[thisNode] + self.graph.Edges[thisNode][o]
+    #             if tempLenghth < distance[o]:
+    #                 distance[o] = tempLenghth
+    #                 thePath[o] = []
+    #                 thePath[o] = thePath[thisNode].copy()
+    #                 thePath[o].append(thisNode) #adds the new node to the path
+    #
+    #         if mySet.__contains__(thisNode):
+    #             mySet.remove(thisNode)
+    #
+    #         if len(mySet) == 0:
+    #             break
+    #
+    #         minimumDistance = float('inf')
+    #         j = 0
+    #         for i in mySet:
+    #             if minimumDistance > distance[i]:
+    #                 minimumDistance = distance[i]
+    #                 j = i
+    #
+    #         thisNode = j
+    #     return distance, thePath
 
     #this method returns the shortest path from the given source and destination
     def shortest_path(self, id1: int, id2: int) -> (float, list):
@@ -128,15 +192,8 @@ class GraphAlgo(GraphAlgoInterface):
 
         distance, thePath = self.dijkDist(id1)
 
-        if distance[id2] == -1 or distance[id2] == float('inf'):
-            return -1, None
+        finalPath = thePath[id2]
 
-        finalPath = []
-        for p in thePath:
-            if len(p) != 0 and finalPath.__contains__(p[0].id) == False:
-                finalPath.append(p[0].id)
-
-        finalPath.append(id2)
         return distance[id2], finalPath
 
     #this method checking if every node in the list was visited
@@ -220,6 +277,8 @@ class GraphAlgo(GraphAlgoInterface):
             visi[curr] = True
             curr = nextNode
         sumOfWw = self.sumOfW(thePath)
+
+        thePath.pop(0)
         return thePath, sumOfWw
 
     #this method returns list of the largest path

@@ -9,15 +9,14 @@ class TestDiGraph(TestCase):
         g = DiGraph()
         ga = GraphAlgo()
         ga.graph=g
-        ga.load_from_json('../data/A0.json')
-
+        ga.load_from_json('../data/A0')
         self.assertEqual (g.v_size(),11)
 
     def test_e_size(self):
         g = DiGraph()
         ga = GraphAlgo()
         ga.graph = g
-        ga.load_from_json('../data/A0.json')
+        ga.load_from_json('../data/A0')
 
         self.assertEqual(g.e_size(),22)
 
@@ -25,7 +24,7 @@ class TestDiGraph(TestCase):
         g = DiGraph()
         ga = GraphAlgo()
         ga.graph = g
-        ga.load_from_json('../data/A0.json')
+        ga.load_from_json('../data/A0')
 
         self.assertEqual(g.get_mc(),0)
         g.remove_edge(10,9)
@@ -35,7 +34,7 @@ class TestDiGraph(TestCase):
         g = DiGraph()
         ga = GraphAlgo()
         ga.graph = g
-        ga.load_from_json('../data/A0.json')
+        ga.load_from_json('../data/A0')
 
         self.assertEqual(g.e_size(),22)
         g.add_edge(0,5,33)
@@ -45,7 +44,7 @@ class TestDiGraph(TestCase):
         g = DiGraph()
         ga = GraphAlgo()
         ga.graph = g
-        ga.load_from_json('../data/A1.json')
+        ga.load_from_json('../data/A1')
 
         self.assertEqual(g.v_size(), 17)
         g.add_node(17,(1,1,0))
@@ -55,7 +54,7 @@ class TestDiGraph(TestCase):
         g = DiGraph()
         ga = GraphAlgo()
         ga.graph = g
-        ga.load_from_json('../data/A1.json')
+        ga.load_from_json('../data/A1')
 
         self.assertEqual(g.v_size(), 17)
         g.remove_node(0)
@@ -66,7 +65,7 @@ class TestDiGraph(TestCase):
         g = DiGraph()
         ga = GraphAlgo()
         ga.graph = g
-        ga.load_from_json('../data/A0.json')
+        ga.load_from_json('../data/A0')
 
         self.assertEqual(g.e_size(), 22)
         g.remove_edge(0,1)
